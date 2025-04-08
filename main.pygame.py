@@ -12,14 +12,21 @@ display = pygame.display.set_mode((largura, altura))  # Corrigido: nome da vari�
 pygame.display.set_caption("Jogo dos D")
 
 # Carregar imagem e sprite
-drawGroup = pygame.sprite.Group()  # Corrigido: era "Goup" (erro de digitação)
+drawGroup = pygame.sprite.Group() 
 
-imagem = pygame.image.load("img/carafeliz.png").convert_alpha()  # Certifique-se de que esse caminho e o nome do arquivo estão corretos
+imagem = pygame.image.load("img/carafeliz.png").convert_alpha()  # trasparencia convert_alpha
 
 guy = pygame.sprite.Sprite(drawGroup)
-guy.image = pygame.transform.scale(imagem, [100, 100])  # Corrigido: estava usando guy.image antes de definir
+guy.image = pygame.transform.scale(imagem, [100, 100]) 
 guy.rect = guy.image.get_rect()
 guy.rect.topleft = (50, 50)
+
+# music
+pygame.mixer.music.load("audio/blues.mp3")
+pygame.mixer.music.play(-1)
+
+# Sounds
+complete = pygame.mixer.Sound("audi/completetask_0.mp3")
 
 # Loop principal
 gameLoop = True
@@ -28,7 +35,9 @@ while gameLoop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameLoop = False
-
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                complete.play()
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         guy.rect.x += 1
@@ -38,6 +47,8 @@ while gameLoop:
         print("Segurando W")
 
     # Draw
-    display.fill([87, 8, 44])  # Corrigido: 'display' não estava definido antes, agora está
+    display.fill([87, 8, 44])  
     drawGroup.draw(display)
     pygame.display.update()
+
+    
